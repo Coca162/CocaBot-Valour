@@ -1,16 +1,18 @@
 ﻿using SpookVooper.Api.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valour.Net.CommandHandling;
+using Valour.Net.CommandHandling.Attributes;
 
 namespace CocaBot_Valour
 {
-    class Command : CommandModuleBase
+    class Misc : CommandModuleBase
     {
         [Command("balance")]
         [Alias("balan", "bal", "b")]
-        public async Task BalanceUser(CommandContext ctx, string Input)
+        public async Task Balance(CommandContext ctx, string Input)
         {
             if (Input[0].Equals('u') || Input[0].Equals('g'))
             {
@@ -34,7 +36,8 @@ namespace CocaBot_Valour
                         string msgCont = null;
                         foreach (KeyValuePair<string, string> svid in svids)
                         {
-                            msgCont += $"\n{svid.Key}: ${svid.Value}";
+                            Entity entity = new Entity(svid.Value, "");
+                            msgCont += $"\n{svid.Key}: ${entity.GetBalanceAsync()}";
                         }
                         await ctx.ReplyAsync($"List of Balances for {Input}: {msgCont}").ConfigureAwait(false);
                     }
@@ -46,8 +49,43 @@ namespace CocaBot_Valour
             }
         }
 
+        [Command("name")]
+        public async Task Name(CommandContext ctx, string InputSVID)
+        {
+            await ctx.ReplyAsync($"Name: {await SVTools.SVIDToName(InputSVID)}").ConfigureAwait(false);
+        }
+
+
+        [Command("svid")]
+        public async Task SVIDAll(CommandContext ctx, string Inputname)
+        {
+            Dictionary<string, string> svids = await SVTools.NameToSVID(Inputname);
+
+            if (svids != null)
+            {
+                if (svids.Count == 1)
+                {
+                    KeyValuePair<string, string> svid = svids.First();
+                    await ctx.ReplyAsync($"{svid.Key}'s SpookVooper Name: {svid.Value}").ConfigureAwait(false);
+                }
+                else
+                {
+                    string msgCont = null;
+                    foreach (KeyValuePair<string, string> svid in svids)
+                    {
+                        msgCont += $"\n{svid.Key}: {svid.Value}";
+                    }
+                    await ctx.ReplyAsync($"List of SVIDs: {msgCont}").ConfigureAwait(false);
+                }
+            }
+            else
+            {
+                await ctx.ReplyAsync($"This name does not match to any entity (user/group)!").ConfigureAwait(false);
+            }
+        }
+
         [Command("test")]
-        public async Task BalanceUser(CommandContext ctx)
+        public async Task Test(CommandContext ctx)
         {
             if (ctx.Member.Nickname == "superjacobl")
             {
