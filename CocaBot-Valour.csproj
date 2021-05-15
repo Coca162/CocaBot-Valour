@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>CocaBot_Valour</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Valour.Net\**" />
+    <EmbeddedResource Remove="Valour.Net\**" />
+    <None Remove="Valour.Net\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SpookVooper.Api" Version="1.3.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Valour.Net\Valour.Net.csproj" />
+  </ItemGroup>
+
+</Project>
