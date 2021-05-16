@@ -30,7 +30,7 @@ namespace CocaBot_Valour
         public static Config instance;
 
         [JsonProperty]
-        public string CommandSign { get; set; }
+        public string[] CommandSign { get; set; }
         [JsonProperty]
         public string BotPassword { get; set; }
         [JsonProperty]

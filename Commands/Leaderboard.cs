@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Valour.Net.CommandHandling;
-using Valour.Net.CommandHandling.Attributes;
 
-namespace CocaBot_Valour
+namespace CocaBot_Valour.Commands
 {
     class Leaderboard : CommandModuleBase
     {
-        // SINCE SV IS BROKEN THIS DOES NOT WORK!
         Dictionary<string, string> usersDict = new Dictionary<string, string>
         {
                 { "Xboy", "u-9062fe43-75b0-4f26-a8fd-6a1cdd6883a2" },

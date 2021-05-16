@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Valour.Net.CommandHandling;
 using Valour.Net.CommandHandling.Attributes;
 
-namespace CocaBot_Valour
+namespace CocaBot_Valour.Commands
 {
     class Misc : CommandModuleBase
     {
@@ -17,7 +17,7 @@ namespace CocaBot_Valour
             if (Input[0].Equals('u') || Input[0].Equals('g'))
             {
                 Entity entity = new Entity(Input, null);
-                await ctx.ReplyAsync($"{await SVTools.SVIDToName(Input)}'s Balance: ¢{await entity.GetBalanceAsync()}").ConfigureAwait(false);
+                await ctx.ReplyAsync($"{await SVTools.SVIDToName(Input)}'s Balance: ¢{Math.Round(await entity.GetBalanceAsync(), 2, MidpointRounding.ToZero)}").ConfigureAwait(false);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace CocaBot_Valour
                     {
                         KeyValuePair<string, string> svid = svids.First();
                         Entity entity = new Entity(svid.Value, "");
-                        await ctx.ReplyAsync($"{Input}'s Balance: ¢{await entity.GetBalanceAsync()}").ConfigureAwait(false);
+                        await ctx.ReplyAsync($"{Input}'s Balance: ¢{Math.Round(await entity.GetBalanceAsync(), 2, MidpointRounding.ToZero)}").ConfigureAwait(false);
                     }
                     else
                     {
@@ -37,7 +37,7 @@ namespace CocaBot_Valour
                         foreach (KeyValuePair<string, string> svid in svids)
                         {
                             Entity entity = new Entity(svid.Value, "");
-                            msgCont += $"\n{svid.Key}: ${entity.GetBalanceAsync()}";
+                            msgCont += $"\n{svid.Key}: ¢{Math.Round(await entity.GetBalanceAsync(), 2, MidpointRounding.ToZero)}";
                         }
                         await ctx.ReplyAsync($"List of Balances for {Input}: {msgCont}").ConfigureAwait(false);
                     }
@@ -95,6 +95,13 @@ namespace CocaBot_Valour
             {
                 await ctx.ReplyAsync("Jacob Good!").ConfigureAwait(false);
             }
+        }
+
+
+        [Command("say")]
+        public async Task Test(CommandContext ctx, [Remainder] string Input)
+        {
+            await ctx.ReplyAsync(Input);
         }
     }
 }
